@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 1 ] && [ ! -f '.tmux.conf' ]
+then
+  echo "$0: missing file operand"
+  echo "Try '$0 --help' for more information."
+  exit 1
+fi
+
+FILE=$1
+
+if [ ! -f "$HOME/.config/tmux-project/$FILE" ]; then
+  echo "$0: File ‘${FILE}’ not found"
+  exit 1
+fi
+
+if ! tmux has-session -t "$FILE" > /dev/null 2>&1
+then
+  TMUX='' tmux new-session -d -s "$FILE"
+  xargs -L1 tmux < "$HOME/.config/tmux-project/$FILE"
+  tmux select-window -t 1
+fi
+
+if [ -z "$TMUX" ]
+then
+  tmux attach -t "$SESSION"
+else
+  tmux switch-client -t "$SESSION"
+fi
