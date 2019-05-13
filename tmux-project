@@ -23,7 +23,7 @@ if [ ! -f "$HOME/.config/tmux-project/$PROJECT" ]; then
   exit 1
 fi
 
-if ! tmux has-session -t "$FILE" > /dev/null 2>&1; then
+if ! tmux has-session -t "$PROJECT" > /dev/null 2>&1; then
   TMUX='' tmux new-session -d -s "$PROJECT"
   xargs -L1 tmux < "$HOME/.config/tmux-project/$PROJECT"
   tmux select-window -t 1
