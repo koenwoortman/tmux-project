@@ -1,29 +1,36 @@
 #!/usr/bin/env bash
 
-if [ $# -ne 1 ] && [ ! -f '.tmux.conf' ]
-then
-  echo "$0: missing file operand"
-  echo "Try '$0 --help' for more information."
+SCRIPT_NAME=${0##*/}
+
+if [ $# -ne 1 ] && [ ! -f '.tmux.conf' ]; then
+  cat << EOF
+${SCRIPT_NAME}: Missing project name
+
+usage: ${SCRIPT_NAME} <project name>
+
+Project configs should be placed in:
+${HOME}/.config/tmux-project/{PROJECT_NAME}
+
+EOF
+
   exit 1
 fi
 
-FILE=$1
+PROJECT=$1
 
-if [ ! -f "$HOME/.config/tmux-project/$FILE" ]; then
-  echo "$0: File ‘${FILE}’ not found"
+if [ ! -f "$HOME/.config/tmux-project/$PROJECT" ]; then
+  echo "$SCRIPT_NAME: File '${PROJECT}' not found"
   exit 1
 fi
 
-if ! tmux has-session -t "$FILE" > /dev/null 2>&1
-then
-  TMUX='' tmux new-session -d -s "$FILE"
-  xargs -L1 tmux < "$HOME/.config/tmux-project/$FILE"
+if ! tmux has-session -t "$FILE" > /dev/null 2>&1; then
+  TMUX='' tmux new-session -d -s "$PROJECT"
+  xargs -L1 tmux < "$HOME/.config/tmux-project/$PROJECT"
   tmux select-window -t 1
 fi
 
-if [ -z "$TMUX" ]
-then
-  tmux attach -t "$SESSION"
+if [ -z "$TMUX" ]; then
+  tmux attach -t "$PROJECT"
 else
-  tmux switch-client -t "$SESSION"
+  tmux switch-client -t "$PROJECT"
 fi
