@@ -7,6 +7,10 @@ usage() {
   cat << EOF
 usage: ${SCRIPT_NAME} <project name>
 
+options:
+  -h, --help       Display this help message
+  -v, --version    Display the version number
+
 EOF
 
 }
