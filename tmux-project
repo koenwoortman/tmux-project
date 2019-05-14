@@ -10,6 +10,7 @@ usage: ${SCRIPT_NAME} <project name>
 
 options:
   -h, --help       Display this help message
+  -l, --list       List known tmux-projects
   -n, --new        Create a new tmux-project file
   -v, --version    Display the version number
 
@@ -48,12 +49,20 @@ new_project() {
   exit 0
 }
 
+list_projects() {
+  ls $PROJECT_DIR
+  exit 0
+}
+
 # Transform long options to short options
 for arg in "$@"; do
   shift
   case "$arg" in
     "--help")
       set -- "$@" "-h"
+      ;;
+    "--list")
+      set -- "$@" "-l"
       ;;
     "--new")
       set -- "$@" "-n"
@@ -68,10 +77,13 @@ for arg in "$@"; do
 done
 
 # Parse short options
-while getopts "hnv" opt; do
+while getopts "hlnv" opt; do
   case "$opt" in
     "h")
       usage
+      ;;
+    "l")
+      list_projects
       ;;
     "n")
       new_project $@
