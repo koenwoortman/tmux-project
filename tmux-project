@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_NAME=${0##*/}
-VERSION=0.0.0
+VERSION=0.1.0
 PROJECT_DIR="$HOME/.config/tmux-project"
 
 usage() {
