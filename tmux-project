@@ -33,6 +33,11 @@ new_project() {
 
   PROJECT_NAME=$1
 
+  if [ -z "$PROJECT_NAME" ]; then
+    echo "$SCRIPT_NAME: specify a project name: ${SCRIPT_NAME} --new <project name>"
+    exit 1
+  fi
+
   if [[ -f "$PROJECT_DIR/$PROJECT_NAME" ]]; then
     echo "$SCRIPT_NAME: '$PROJECT_NAME' already exists in $PROJECT_DIR"
     exit 1
