@@ -86,11 +86,6 @@ while getopts "hnv" opt; do
   esac
 done
 
-# Remove options from positional parameters
-shift
-
-
-
 if [ $# -ne 1 ]; then
   usage
   exit 1
