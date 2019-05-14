@@ -10,6 +10,29 @@ EOF
 
 }
 
+# Transform long options to short options
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    "--help") set -- "$@" "-h" ;;
+    *)        set -- "$@" "$arg"
+  esac
+done
+
+# Parse short options
+while getopts "hv" opt
+do
+  case "$opt" in
+    "h") usage; exit 0 ;;
+    "?") usage >&2; exit 1 ;;
+  esac
+done
+
+# Remove options from positional parameters
+shift $(expr 0)
+
+
+
 if [ $# -ne 1 ]; then
   usage
   exit 1
