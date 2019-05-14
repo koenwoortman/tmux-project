@@ -9,11 +9,11 @@ usage() {
 usage: ${SCRIPT_NAME} <project name>
 
 options:
-  -h, --help       Display this help message
-  -l, --list       List known tmux-projects
-  -n, --new        Create a new tmux-project file
-  -s, --save       Save current session as tmux-project
-  -v, --version    Display the version number
+  -h, --help                  Display this help message
+  -l, --list                  List known tmux-projects
+  -n, --new        PROJECT    Create a new tmux-project file
+  -s, --save                  Save current session as tmux-project
+  -v, --version               Display the version number
 
 EOF
 
