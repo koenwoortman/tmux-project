@@ -28,19 +28,33 @@ EOF
 for arg in "$@"; do
   shift
   case "$arg" in
-    "--help") set -- "$@" "-h" ;;
-    "--version") set -- "$@" "-v" ;;
-    *)        set -- "$@" "$arg"
+    "--help")
+      set -- "$@" "-h"
+      ;;
+    "--version")
+      set -- "$@" "-v"
+      ;;
+    *)
+      set -- "$@" "$arg"
+      ;;
   esac
 done
 
 # Parse short options
-while getopts "hv" opt
-do
+while getopts "hv" opt; do
   case "$opt" in
-    "h") usage; exit 0 ;;
-    "v") version; exit 0 ;;
-    "?") usage >&2; exit 1 ;;
+    "h")
+      usage
+      exit 0
+      ;;
+    "v")
+      version
+      exit 0
+      ;;
+    "?")
+      usage >&2
+      exit 1
+      ;;
   esac
 done
 
