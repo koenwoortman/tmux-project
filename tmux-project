@@ -10,6 +10,7 @@ usage: ${SCRIPT_NAME} <project name>
 
 options:
   -h, --help       Display this help message
+  -n, --new        Create a new tmux-project file
   -v, --version    Display the version number
 
 EOF
@@ -26,12 +27,31 @@ EOF
   exit 0
 }
 
+new_project() {
+  # Remove the option parameter
+  shift
+
+  PROJECT_NAME=$1
+
+  if [[ -f "$PROJECT_DIR/$PROJECT_NAME" ]]; then
+    echo "$SCRIPT_NAME: '$PROJECT_NAME' already exists in $PROJECT_DIR"
+    exit 1
+  fi
+
+  touch "$PROJECT_DIR/$PROJECT_NAME"
+
+  exit 0
+}
+
 # Transform long options to short options
 for arg in "$@"; do
   shift
   case "$arg" in
     "--help")
       set -- "$@" "-h"
+      ;;
+    "--new")
+      set -- "$@" "-n"
       ;;
     "--version")
       set -- "$@" "-v"
@@ -43,10 +63,13 @@ for arg in "$@"; do
 done
 
 # Parse short options
-while getopts "hv" opt; do
+while getopts "hnv" opt; do
   case "$opt" in
     "h")
       usage
+      ;;
+    "n")
+      new_project $@
       ;;
     "v")
       version
@@ -59,7 +82,7 @@ while getopts "hv" opt; do
 done
 
 # Remove options from positional parameters
-shift $(expr 0)
+shift
 
 
 
