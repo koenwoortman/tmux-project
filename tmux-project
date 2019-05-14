@@ -2,17 +2,16 @@
 
 SCRIPT_NAME=${0##*/}
 
-if [ $# -ne 1 ] && [ ! -f '.tmux.conf' ]; then
+usage() {
   cat << EOF
-${SCRIPT_NAME}: Missing project name
-
 usage: ${SCRIPT_NAME} <project name>
-
-Project configs should be placed in:
-${HOME}/.config/tmux-project/{PROJECT_NAME}
 
 EOF
 
+}
+
+if [ $# -ne 1 ] && [ ! -f '.tmux.conf' ]; then
+  usage
   exit 1
 fi
 
