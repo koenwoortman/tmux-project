@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 
 SCRIPT_NAME=${0##*/}
+VERSION=0.0.0
 
 usage() {
   cat << EOF
 usage: ${SCRIPT_NAME} <project name>
+
+EOF
+
+}
+
+version() {
+  cat << EOF
+tmux-project ${VERSION}
 
 EOF
 
@@ -15,6 +24,7 @@ for arg in "$@"; do
   shift
   case "$arg" in
     "--help") set -- "$@" "-h" ;;
+    "--version") set -- "$@" "-v" ;;
     *)        set -- "$@" "$arg"
   esac
 done
@@ -24,6 +34,7 @@ while getopts "hv" opt
 do
   case "$opt" in
     "h") usage; exit 0 ;;
+    "v") version; exit 0 ;;
     "?") usage >&2; exit 1 ;;
   esac
 done
