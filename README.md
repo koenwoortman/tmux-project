@@ -2,8 +2,6 @@
 
 Create and switch between preconfigured tmux sessions.
 
-Inspired by [jamesottaway/tmux-up](https://github.com/jamesottaway/tmux-up)
-
 
 ## Usage
 
@@ -18,3 +16,13 @@ send-keys "cd ~/projects/foo && yarn run dev" C-m
 ```
 
 And run `tmux-project foo`.
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+
+## Acknowledgments
+
+* Inspired by [jamesottaway/tmux-up](https://github.com/jamesottaway/tmux-up)
