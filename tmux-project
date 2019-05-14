@@ -2,6 +2,7 @@
 
 SCRIPT_NAME=${0##*/}
 VERSION=0.0.0
+PROJECT_DIR="$HOME/.config/tmux-project"
 
 usage() {
   cat << EOF
@@ -55,14 +56,14 @@ fi
 
 PROJECT=$1
 
-if [ ! -f "$HOME/.config/tmux-project/$PROJECT" ]; then
-  echo "$SCRIPT_NAME: File '${PROJECT}' not found"
+if [ ! -f "$PROJECT_DIR/$PROJECT" ]; then
+  echo "$SCRIPT_NAME: '$PROJECT' not found in $PROJECT_DIR"
   exit 1
 fi
 
 if ! tmux has-session -t "$PROJECT" > /dev/null 2>&1; then
   TMUX='' tmux new-session -d -s "$PROJECT"
-  xargs -L1 tmux < "$HOME/.config/tmux-project/$PROJECT"
+  xargs -L1 tmux < "$PROJECT_DIR/$PROJECT"
   tmux select-window -t 1
 fi
 
