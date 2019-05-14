@@ -14,6 +14,7 @@ options:
 
 EOF
 
+  exit 0
 }
 
 version() {
@@ -22,6 +23,7 @@ tmux-project ${VERSION}
 
 EOF
 
+  exit 0
 }
 
 # Transform long options to short options
@@ -45,11 +47,9 @@ while getopts "hv" opt; do
   case "$opt" in
     "h")
       usage
-      exit 0
       ;;
     "v")
       version
-      exit 0
       ;;
     "?")
       usage >&2
