@@ -3,19 +3,52 @@
 Create and switch between preconfigured tmux sessions.
 
 
-## Usage
+## Get started
 
 Create a tmux sessions file with normal tmux commands
 
 ```
-# cat ~/.config/tmux-project/foo
+$ cat ~/.config/tmux-project/foo
 rename-window code
 send-keys "cd ~/projects/foo && vim ." C-m
 new-window -n server
 send-keys "cd ~/projects/foo && yarn run dev" C-m
 ```
 
-And run `tmux-project foo`.
+Make sure `tmux-project` can be found in your PATH and run `tmux-project foo`.
+
+
+## Usage
+
+Open a project from an existing bootstrap file.
+```
+tmux-project <project>
+```
+
+Create a new project bootstrap file.
+```
+tmux-project --new <project>
+```
+
+Save current tmux session to a project bootstrap file.
+```
+tmux-project --save
+```
+
+Edit a project bootstrap file.
+```
+tmux-project --edit <project>
+```
+
+List all the projects you have configured.
+```
+tmux-project --list
+```
+
+Shows tmux-project version.
+```
+tmux-project --version
+```
 
 
 ## Configuration
