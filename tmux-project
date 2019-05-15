@@ -29,6 +29,36 @@ EOF
   exit 0
 }
 
+delimiter=$'\t'
+
+window_format() {
+	local format
+  format+="#{window_name}"
+	echo "$format"
+}
+
+dump_tmux_windows() {
+  tmux list-windows -a -F "$(window_format)"
+}
+
+capture_tmux_windows() {
+  config=''
+  windows=$( dump_tmux_windows )
+
+  iteration=1
+  for window in $windows; do
+    if [[ "$iteration" -eq 1 ]]; then
+      config="rename-window $window"
+    else
+      config+="\nnew-window -n $window"
+    fi
+
+    iteration=$((iteration + 1))
+  done
+
+  echo "${config}"
+}
+
 new_project() {
   # Remove the option parameter
   shift
@@ -68,7 +98,8 @@ save_project() {
     exit 1
   fi
 
-  touch "$PROJECT_DIR/$PROJECT_NAME"
+  windows=$( capture_tmux_windows )
+  echo -e "$windows" >> "$PROJECT_DIR/$PROJECT_NAME"
 
   echo "$SCRIPT_NAME: saved '$PROJECT_NAME'"
 
