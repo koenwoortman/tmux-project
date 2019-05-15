@@ -18,6 +18,14 @@ send-keys "cd ~/projects/foo && yarn run dev" C-m
 And run `tmux-project foo`.
 
 
+## Configuration
+
+tmux-project will attempt to find bootstrap files in one of the following locations (in order):
+
+* `$TMUX_PROJECT_DIR`
+* `$HOME/.config/tmux-project`
+
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
