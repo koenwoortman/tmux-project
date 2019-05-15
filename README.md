@@ -45,6 +45,11 @@ List all the projects you have configured.
 tmux-project --list
 ```
 
+Shows tmux-project help information.
+```
+tmux-project --help
+```
+
 Shows tmux-project version.
 ```
 tmux-project --version
