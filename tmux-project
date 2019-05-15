@@ -29,8 +29,6 @@ EOF
   exit 0
 }
 
-delimiter=$'\t'
-
 window_format() {
 	local format
   format+="#{window_name}"
