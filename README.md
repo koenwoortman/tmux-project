@@ -1,5 +1,7 @@
 # tmux-project
 
+[![Travis build status](https://travis-ci.org/koenwoortman/tmux-project.svg?branch=master)](https://travis-ci.org/koenwoortman/tmux-project)
+
 Create and switch between preconfigured tmux sessions.
 
 
