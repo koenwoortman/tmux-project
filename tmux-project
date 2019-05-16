@@ -13,6 +13,7 @@ options:
   -h, --help                  Display this help message
   -l, --list                  List known tmux-projects
   -n, --new        PROJECT    Create a new tmux-project file
+  -r, --remove     PROJECT    Remove a new tmux-project file
   -s, --save                  Save current session as tmux-project
   -v, --version               Display the version number
 
@@ -126,6 +127,32 @@ save_project() {
   exit 0
 }
 
+remove_project() {
+  # Remove the option parameter
+  shift
+
+  project_name=$1
+
+  if [ -z "$project_name" ]; then
+    echo "$SCRIPT_NAME: specify a project: ${SCRIPT_NAME} --remove <project name>"
+    exit 1
+  fi
+
+  if [[ ! -f "$PROJECT_DIR/$project_name" ]]; then
+    echo "$SCRIPT_NAME: '$project_name' doesn't exists in $PROJECT_DIR"
+    exit 1
+  fi
+
+  read -p "Are you sure? (y/n) " -n 1 -r
+  echo    # Move to a new line
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    rm "$PROJECT_DIR/$project_name"
+    exit $?
+  fi
+
+  exit 0
+}
+
 # Transform long options to short options
 for arg in "$@"; do
   shift
@@ -142,6 +169,9 @@ for arg in "$@"; do
     "--new")
       set -- "$@" "-n"
       ;;
+    "--remove")
+      set -- "$@" "-r"
+      ;;
     "--save")
       set -- "$@" "-s"
       ;;
@@ -155,7 +185,7 @@ for arg in "$@"; do
 done
 
 # Parse short options
-while getopts "ehlnsv" opt; do
+while getopts "ehlnrsv" opt; do
   case "$opt" in
     "e")
       edit_project $@
@@ -168,6 +198,9 @@ while getopts "ehlnsv" opt; do
       ;;
     "n")
       new_project $@
+      ;;
+    "r")
+      remove_project $@
       ;;
     "s")
       save_project
