@@ -45,6 +45,11 @@ List all the projects you have configured.
 tmux-project --list
 ```
 
+Remove a project bootstrap file.
+```
+tmux-project --remove <project>
+```
+
 Shows tmux-project help information.
 ```
 tmux-project --help
