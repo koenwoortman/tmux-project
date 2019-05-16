@@ -5,4 +5,5 @@
 @test "help: display help" {
   run ../tmux-project --help
   [ "${lines[0]}" = "usage: tmux-project <project name>" ]
+  [ "$status" -eq 0 ]
 }
