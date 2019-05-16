@@ -4,4 +4,4 @@ os:
   - linux
   - osx
 
-script: echo "success"
+script: ./run_tests.sh
