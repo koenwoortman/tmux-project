@@ -52,6 +52,11 @@ Remove a project bootstrap file.
 tmux-project --remove <project>
 ```
 
+Close the current or specified tmux session
+```
+tmux-project --close [<project>]
+```
+
 Shows tmux-project help information.
 ```
 tmux-project --help
