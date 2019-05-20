@@ -73,13 +73,11 @@ new_project() {
   project_name=$1
 
   if [ -z "$project_name" ]; then
-    echo "$SCRIPT_NAME: specify a project name: ${SCRIPT_NAME} --new <project name>"
-    exit 1
+    error "specify a project name: ${SCRIPT_NAME} --new <project name>"
   fi
 
   if [[ -f "$PROJECT_DIR/$project_name" ]]; then
-    echo "$SCRIPT_NAME: '$project_name' already exists in $PROJECT_DIR"
-    exit 1
+    error "'$project_name' already exists in $PROJECT_DIR"
   fi
 
   touch "$PROJECT_DIR/$project_name"
@@ -94,13 +92,11 @@ edit_project() {
   project_name=$1
 
   if [ -z "$project_name" ]; then
-    echo "$SCRIPT_NAME: specify a project: ${SCRIPT_NAME} --edit <project name>"
-    exit 1
+    error "specify a project: ${SCRIPT_NAME} --edit <project name>"
   fi
 
   if [[ ! -f "$PROJECT_DIR/$project_name" ]]; then
-    echo "$SCRIPT_NAME: '$project_name' does not exists in $PROJECT_DIR"
-    exit 1
+    echo "'$project_name' does not exists in $PROJECT_DIR"
   fi
 
   ${EDITOR:-vi} "$PROJECT_DIR/$project_name"
@@ -115,15 +111,13 @@ list_projects() {
 
 save_project() {
   if [ -z "$TMUX" ]; then
-    echo "$SCRIPT_NAME: can't store current session if tmux isn't active"
-    exit 1
+    error "can't store current session if tmux isn't active"
   fi
 
   project_name=$( tmux display-message -p '#S' )
 
   if [[ -f "$PROJECT_DIR/$project_name" ]]; then
-    echo "$SCRIPT_NAME: '$project_name' already exists in $PROJECT_DIR"
-    exit 1
+    error "'$project_name' already exists in $PROJECT_DIR"
   fi
 
   windows=$( capture_tmux_windows )
@@ -141,13 +135,11 @@ remove_project() {
   project_name=$1
 
   if [ -z "$project_name" ]; then
-    echo "$SCRIPT_NAME: specify a project: ${SCRIPT_NAME} --remove <project name>"
-    exit 1
+    error "specify a project: ${SCRIPT_NAME} --remove <project name>"
   fi
 
   if [[ ! -f "$PROJECT_DIR/$project_name" ]]; then
-    echo "$SCRIPT_NAME: '$project_name' doesn't exists in $PROJECT_DIR"
-    exit 1
+    error "'$project_name' doesn't exists in $PROJECT_DIR"
   fi
 
   read -p "Are you sure? (y/n) " -n 1 -r
@@ -168,8 +160,7 @@ close_project() {
 
   if [ -z "$project_name" ]; then
     if [ -z "$TMUX" ]; then
-      echo "$SCRIPT_NAME: No current tmux session"
-      exit 1
+      error "No current tmux session"
     fi
 
     tmux kill-session
@@ -247,15 +238,13 @@ while getopts "cehlnrsv" opt; do
 done
 
 if [ $# -ne 1 ]; then
-  usage
-  exit 1
+  error "No project specified"
 fi
 
 PROJECT=$1
 
 if [ ! -f "$PROJECT_DIR/$PROJECT" ]; then
-  echo "$SCRIPT_NAME: '$PROJECT' not found in $PROJECT_DIR"
-  exit 1
+  error "'$PROJECT' not found in $PROJECT_DIR"
 fi
 
 if ! tmux has-session -t "$PROJECT" > /dev/null 2>&1; then
