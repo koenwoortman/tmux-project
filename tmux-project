@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=${0##*/}
 VERSION=0.2.0
-PROJECT_DIR=${TMUX_PROJECT_DIR:-"$HOME/.config/tmux-project"}
+PROJECT_DIR=${TMUX_PROJECT_DIR:-"$HOME/.config/tRmux-project"}
 
 usage() {
   cat << EOF
@@ -22,6 +22,12 @@ EOF
 
   exit 0
 }
+
+error() {
+  [[ -z "$1" ]] || printf '%s: %s\n' "${SCRIPT_NAME}" "$1"
+  printf "Try '%s --help' for more information.\\n" "${SCRIPT_NAME}"
+  exit 1
+} >&2
 
 version() {
   cat << EOF
