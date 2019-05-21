@@ -45,10 +45,10 @@ dump_tmux_windows() {
 }
 
 capture_tmux_windows() {
-  config=''
-  windows=$( dump_tmux_windows )
+  local config=''
+  local windows=$( dump_tmux_windows )
 
-  iteration=1
+  local iteration=1
   for window in $windows; do
     if [[ "$iteration" -eq 1 ]]; then
       config="rename-window $window"
@@ -63,7 +63,7 @@ capture_tmux_windows() {
 }
 
 new_project() {
-  project_name=$1
+  local project_name=$1
 
   if [ -z "$project_name" ]; then
     error "specify a project name: ${SCRIPT_NAME} --new <project name>"
@@ -77,7 +77,7 @@ new_project() {
 }
 
 edit_project() {
-  project_name=$1
+  local project_name=$1
 
   if [ -z "$project_name" ]; then
     error "specify a project: ${SCRIPT_NAME} --edit <project name>"
@@ -99,20 +99,20 @@ save_project() {
     error "can't store current session if tmux isn't active"
   fi
 
-  project_name=$( tmux display-message -p '#S' )
+  local project_name=$( tmux display-message -p '#S' )
 
   if [[ -f "$PROJECT_DIR/$project_name" ]]; then
     error "'$project_name' already exists in $PROJECT_DIR"
   fi
 
-  windows=$( capture_tmux_windows )
+  local windows=$( capture_tmux_windows )
   echo -e "$windows" >> "$PROJECT_DIR/$project_name"
 
   echo "$SCRIPT_NAME: saved '$project_name'"
 }
 
 remove_project() {
-  project_name=$1
+  local project_name=$1
 
   if [ -z "$project_name" ]; then
     error "specify a project: ${SCRIPT_NAME} --remove <project name>"
@@ -130,7 +130,7 @@ remove_project() {
 }
 
 close_project() {
-  project_name=$1
+  local project_name=$1
 
   if [ -z "$project_name" ]; then
     if [ -z "$TMUX" ]; then
@@ -148,29 +148,29 @@ open_project() {
     error "No project specified"
   fi
 
-  PROJECT=$1
+  local project_name=$1
 
-  if [ ! -f "$PROJECT_DIR/$PROJECT" ]; then
-    error "'$PROJECT' not found in $PROJECT_DIR"
+  if [ ! -f "$PROJECT_DIR/$project_name" ]; then
+    error "'$project_name' not found in $PROJECT_DIR"
   fi
 
-  if ! tmux has-session -t "$PROJECT" > /dev/null 2>&1; then
-    TMUX='' tmux new-session -d -s "$PROJECT"
-    xargs -L1 tmux < "$PROJECT_DIR/$PROJECT"
+  if ! tmux has-session -t "$project_name" > /dev/null 2>&1; then
+    TMUX='' tmux new-session -d -s "$project_name"
+    xargs -L1 tmux < "$PROJECT_DIR/$project_name"
     tmux select-window -t 1
   fi
 
   if [ -z "$TMUX" ]; then
-    tmux attach -t "$PROJECT"
+    tmux attach -t "$project_name"
   else
-    tmux switch-client -t "$PROJECT"
+    tmux switch-client -t "$project_name"
   fi
 }
 
 parse_arguments() {
-  COMMAND=$1
+  local argument=$1
 
-  case "${COMMAND}" in
+  case "${argument}" in
     '-c' | '--close')
       close_project $2
       ;;
@@ -197,7 +197,7 @@ parse_arguments() {
       version
       ;;
     '')
-      error 'Missing command'
+      error 'Missing argument'
       ;;
     *)
       open_project $@
