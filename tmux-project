@@ -32,8 +32,6 @@ version() {
 ${SCRIPT_NAME} ${VERSION}
 
 EOF
-
-  exit 0
 }
 
 window_format() {
@@ -76,8 +74,6 @@ new_project() {
   fi
 
   touch "$PROJECT_DIR/$project_name"
-
-  exit 0
 }
 
 edit_project() {
@@ -92,13 +88,10 @@ edit_project() {
   fi
 
   ${EDITOR:-vi} "$PROJECT_DIR/$project_name"
-
-  exit 0
 }
 
 list_projects() {
   ls $PROJECT_DIR
-  exit 0
 }
 
 save_project() {
@@ -116,8 +109,6 @@ save_project() {
   echo -e "$windows" >> "$PROJECT_DIR/$project_name"
 
   echo "$SCRIPT_NAME: saved '$project_name'"
-
-  exit 0
 }
 
 remove_project() {
@@ -135,10 +126,7 @@ remove_project() {
   echo    # Move to a new line
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     rm "$PROJECT_DIR/$project_name"
-    exit $?
   fi
-
-  exit 0
 }
 
 close_project() {
