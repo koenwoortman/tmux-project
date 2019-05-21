@@ -170,14 +170,12 @@ open_project() {
 parse_arguments() {
   COMMAND=$1
 
-  shift
-
   case "${COMMAND}" in
     '-c' | '--close')
-      close_project $@
+      close_project $2
       ;;
     '-e' | '--edit')
-      edit_project $@
+      edit_project $2
       ;;
     '-h' | '--help')
       usage
@@ -187,13 +185,13 @@ parse_arguments() {
       list_projects
       ;;
     '-n' | '--new')
-      new_project $@
+      new_project $2
       ;;
     '-r' | '--remove')
-      remove_project $@
+      remove_project $2
       ;;
     '-s' | '--save')
-      save_project $@
+      save_project $2
       ;;
     '-v' | '--version')
       version
@@ -202,7 +200,7 @@ parse_arguments() {
       error 'Missing command'
       ;;
     *)
-      open_project $COMMAND
+      open_project $@
   esac
 }
 
