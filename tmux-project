@@ -221,7 +221,6 @@ main() {
       ;;
     '-h' | '--help')
       usage
-      exit
       ;;
     '-l' | '--list')
       list_projects
