@@ -52,6 +52,14 @@ require_tmux_session() {
   fi
 }
 
+
+# Launch the editor
+#
+# $@ - file names to edit
+edit() {
+  ${EDITOR:-vi} $@
+}
+
 # Return the format for parsing tmux window details
 window_format() {
   local format
@@ -118,7 +126,7 @@ edit_project() {
     echo "'$project_name' does not exists in $PROJECT_DIR"
   fi
 
-  ${EDITOR:-vi} "$PROJECT_DIR/$project_name"
+  edit "$PROJECT_DIR/$project_name"
 }
 
 
