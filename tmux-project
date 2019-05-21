@@ -45,6 +45,13 @@ EOF
 }
 
 
+# Throw an error when not running inside tmux
+require_tmux_session() {
+  if [[ -z "$TMUX" ]]; then
+    error "Only available inside a tmux session"
+  fi
+}
+
 # Return the format for parsing tmux window details
 window_format() {
   local format
@@ -123,9 +130,7 @@ list_projects() {
 
 # Save the current tmux session to a bootstrap file
 save_project() {
-  if [[ -z "$TMUX" ]]; then
-    error "can't store current session if tmux isn't active"
-  fi
+  require_tmux_session
 
   local project_name=$( tmux display-message -p '#S' )
 
@@ -169,9 +174,7 @@ close_project() {
   local project_name=$1
 
   if [[ -z "$project_name" ]]; then
-    if [[ -z "$TMUX" ]]; then
-      error "No current tmux session"
-    fi
+    require_tmux_session
 
     tmux kill-session
   else
