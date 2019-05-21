@@ -2,7 +2,7 @@
 
 SCRIPT_NAME=${0##*/}
 VERSION=0.2.0
-PROJECT_DIR=${TMUX_PROJECT_DIR:-"$HOME/.config/tRmux-project"}
+PROJECT_DIR=${TMUX_PROJECT_DIR:-"$HOME/.config/tmux-project"}
 
 usage() {
   cat << EOF
@@ -19,8 +19,6 @@ options:
   -v, --version               Display the version number
 
 EOF
-
-  exit 0
 }
 
 error() {
@@ -67,9 +65,6 @@ capture_tmux_windows() {
 }
 
 new_project() {
-  # Remove the option parameter
-  shift
-
   project_name=$1
 
   if [ -z "$project_name" ]; then
@@ -86,9 +81,6 @@ new_project() {
 }
 
 edit_project() {
-  # Remove the option parameter
-  shift
-
   project_name=$1
 
   if [ -z "$project_name" ]; then
@@ -129,9 +121,6 @@ save_project() {
 }
 
 remove_project() {
-  # Remove the option parameter
-  shift
-
   project_name=$1
 
   if [ -z "$project_name" ]; then
@@ -153,9 +142,6 @@ remove_project() {
 }
 
 close_project() {
-  # Remove the option parameter
-  shift
-
   project_name=$1
 
   if [ -z "$project_name" ]; then
@@ -169,92 +155,67 @@ close_project() {
   fi
 }
 
-# Transform long options to short options
-for arg in "$@"; do
-  shift
-  case "$arg" in
-    "--close")
-      set -- "$@" "-c"
-      ;;
-    "--edit")
-      set -- "$@" "-e"
-      ;;
-    "--help")
-      set -- "$@" "-h"
-      ;;
-    "--list")
-      set -- "$@" "-l"
-      ;;
-    "--new")
-      set -- "$@" "-n"
-      ;;
-    "--remove")
-      set -- "$@" "-r"
-      ;;
-    "--save")
-      set -- "$@" "-s"
-      ;;
-    "--version")
-      set -- "$@" "-v"
-      ;;
-    *)
-      set -- "$@" "$arg"
-      ;;
-  esac
-done
+open_project() {
+  if [ $# -ne 1 ]; then
+    error "No project specified"
+  fi
 
-# Parse short options
-while getopts "cehlnrsv" opt; do
-  case "$opt" in
-    "c")
+  PROJECT=$1
+
+  if [ ! -f "$PROJECT_DIR/$PROJECT" ]; then
+    error "'$PROJECT' not found in $PROJECT_DIR"
+  fi
+
+  if ! tmux has-session -t "$PROJECT" > /dev/null 2>&1; then
+    TMUX='' tmux new-session -d -s "$PROJECT"
+    xargs -L1 tmux < "$PROJECT_DIR/$PROJECT"
+    tmux select-window -t 1
+  fi
+
+  if [ -z "$TMUX" ]; then
+    tmux attach -t "$PROJECT"
+  else
+    tmux switch-client -t "$PROJECT"
+  fi
+}
+
+parse_arguments() {
+  COMMAND=$1
+
+  shift
+
+  case "${COMMAND}" in
+    '-c' | '--close')
       close_project $@
       ;;
-    "e")
+    '-e' | '--edit')
       edit_project $@
       ;;
-    "h")
+    '-h' | '--help')
       usage
+      exit
       ;;
-    "l")
+    '-l' | '--list')
       list_projects
       ;;
-    "n")
+    '-n' | '--new')
       new_project $@
       ;;
-    "r")
+    '-r' | '--remove')
       remove_project $@
       ;;
-    "s")
-      save_project
+    '-s' | '--save')
+      save_project $@
       ;;
-    "v")
+    '-v' | '--version')
       version
       ;;
-    "?")
-      usage >&2
-      exit 1
+    '')
+      error 'Missing command'
       ;;
+    *)
+      open_project $COMMAND
   esac
-done
+}
 
-if [ $# -ne 1 ]; then
-  error "No project specified"
-fi
-
-PROJECT=$1
-
-if [ ! -f "$PROJECT_DIR/$PROJECT" ]; then
-  error "'$PROJECT' not found in $PROJECT_DIR"
-fi
-
-if ! tmux has-session -t "$PROJECT" > /dev/null 2>&1; then
-  TMUX='' tmux new-session -d -s "$PROJECT"
-  xargs -L1 tmux < "$PROJECT_DIR/$PROJECT"
-  tmux select-window -t 1
-fi
-
-if [ -z "$TMUX" ]; then
-  tmux attach -t "$PROJECT"
-else
-  tmux switch-client -t "$PROJECT"
-fi
+parse_arguments "$@"
