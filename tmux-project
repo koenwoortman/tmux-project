@@ -124,7 +124,9 @@ edit_project() {
 
 # List available project bootstrap files
 list_projects() {
-  ls $PROJECT_DIR
+  for file in $( echo "$PROJECT_DIR/*" ); do
+    basename "$file"
+  done
 }
 
 
