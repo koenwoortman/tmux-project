@@ -207,7 +207,6 @@ open_project() {
     error "'$project_name' not found in $PROJECT_DIR"
   fi
 
-
   if ! tmux has-session -t "$project_name" > /dev/null 2>&1; then
     TMUX='' tmux new-session -d -s "$project_name"
     xargs -L1 tmux < "$PROJECT_DIR/$project_name"
