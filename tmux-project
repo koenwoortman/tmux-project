@@ -167,7 +167,7 @@ open_project() {
   fi
 }
 
-parse_arguments() {
+main() {
   local argument=$1
 
   case "${argument}" in
@@ -204,4 +204,4 @@ parse_arguments() {
   esac
 }
 
-parse_arguments "$@"
+main "$@"
