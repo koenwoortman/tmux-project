@@ -4,6 +4,8 @@ SCRIPT_NAME=${0##*/}
 VERSION=0.2.0
 PROJECT_DIR=${TMUX_PROJECT_DIR:-"$HOME/.config/tmux-project"}
 
+
+# Print the script usage
 usage() {
   cat << EOF
 usage: ${SCRIPT_NAME} <project name>
@@ -21,12 +23,20 @@ options:
 EOF
 }
 
+
+# Print an error message
+#
+# $1 - error message
 error() {
   [[ -z "$1" ]] || printf '%s: %s\n' "${SCRIPT_NAME}" "$1"
   printf "Try '%s --help' for more information.\\n" "${SCRIPT_NAME}"
   exit 1
 } >&2
 
+
+# Print the script version
+#
+# $1 - error message
 version() {
   cat << EOF
 ${SCRIPT_NAME} ${VERSION}
@@ -34,16 +44,22 @@ ${SCRIPT_NAME} ${VERSION}
 EOF
 }
 
+
+# Return the format for parsing tmux window details
 window_format() {
   local format
   format+="#{window_name}"
   echo "$format"
 }
 
+
+# Return tmux window information
 dump_tmux_windows() {
   tmux list-windows -a -F "$(window_format)"
 }
 
+
+# Print a tmux window config
 capture_tmux_windows() {
   local config=''
   local windows=$( dump_tmux_windows )
@@ -62,6 +78,10 @@ capture_tmux_windows() {
   echo "${config}"
 }
 
+
+# Create a new project bootstrap file
+#
+# $1 - file name
 new_project() {
   local project_name=$1
 
@@ -76,6 +96,10 @@ new_project() {
   touch "$PROJECT_DIR/$project_name"
 }
 
+
+# Edit a new project bootstrap file
+#
+# $1 - file name to edit
 edit_project() {
   local project_name=$1
 
@@ -90,10 +114,14 @@ edit_project() {
   ${EDITOR:-vi} "$PROJECT_DIR/$project_name"
 }
 
+
+# List available project bootstrap files
 list_projects() {
   ls $PROJECT_DIR
 }
 
+
+# Save the current tmux session to a bootstrap file
 save_project() {
   if [[ -z "$TMUX" ]]; then
     error "can't store current session if tmux isn't active"
@@ -111,6 +139,10 @@ save_project() {
   echo "$SCRIPT_NAME: saved '$project_name'"
 }
 
+
+# Remove a project bootstrap file
+#
+# $1 - bootstrap file to delete
 remove_project() {
   local project_name=$1
 
@@ -129,6 +161,10 @@ remove_project() {
   fi
 }
 
+
+# Close a tmux session
+#
+# $1 - tmux session to close (optional)
 close_project() {
   local project_name=$1
 
@@ -143,6 +179,10 @@ close_project() {
   fi
 }
 
+
+# Open a bootstrapped tmux session
+#
+# $1 - name of the bootstrap file
 open_project() {
   if [[ $# -ne 1 ]]; then
     error "No project specified"
@@ -167,6 +207,8 @@ open_project() {
   fi
 }
 
+
+# Parse arguments
 main() {
   local argument=$1
 
@@ -204,4 +246,6 @@ main() {
   esac
 }
 
+
+# Run the script
 main "$@"
