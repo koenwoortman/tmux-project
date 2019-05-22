@@ -17,3 +17,11 @@ load helpers/main
   [ "${lines[0]}" = "tmux-project: 'bar' doesn't exist" ]
   [ "$status" -eq 1 ]
 }
+
+@test "remove_project: should remove a specified file" {
+  touch "${BATS_TEST_DIRNAME}/statics/bar"
+
+  TMUX_PROJECT_DIR="${BATS_TEST_DIRNAME}/statics" run_script --remove bar  <<< 'y'
+
+  [ "$status" -eq 0 ]
+}
