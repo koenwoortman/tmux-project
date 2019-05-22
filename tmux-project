@@ -101,7 +101,7 @@ new_project() {
   local project_name=$1
 
   if [[ -z "$project_name" ]]; then
-    error "specify a project name: ${SCRIPT_NAME} --new <project name>"
+    error "specify a project name"
   fi
 
   if [[ -f "$PROJECT_DIR/$project_name" ]]; then
