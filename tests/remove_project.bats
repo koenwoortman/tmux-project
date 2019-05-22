@@ -10,3 +10,10 @@ load helpers/main
   [ "${lines[0]}" = "tmux-project: specify a project name" ]
   [ "$status" -eq 1 ]
 }
+
+@test "remove_project: fail when project does not exist" {
+  TMUX_PROJECT_DIR="${BATS_TEST_DIRNAME}/statics" run_script --remove bar
+
+  [ "${lines[0]}" = "tmux-project: 'bar' doesn't exist" ]
+  [ "$status" -eq 1 ]
+}

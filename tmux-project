@@ -166,7 +166,7 @@ remove_project() {
   fi
 
   if [[ ! -f "$PROJECT_DIR/$project_name" ]]; then
-    error "'$project_name' doesn't exists in $PROJECT_DIR"
+    error "'$project_name' doesn't exist"
   fi
 
   read -p "Are you sure? (y/n) " -n 1 -r
