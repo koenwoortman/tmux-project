@@ -2,6 +2,12 @@
 
 load helpers/main
 
+teardown() {
+  if [[ -f "${BATS_TEST_DIRNAME}/statics/bar" ]]; then
+    rm "${BATS_TEST_DIRNAME}/statics/bar"
+  fi
+}
+
 # This suite tests the new project option
 
 @test "new_project: fail when no project name is specified" {
@@ -16,4 +22,10 @@ load helpers/main
 
   [ "${lines[0]}" = "tmux-project: 'foo' already exists" ]
   [ "$status" -eq 1 ]
+}
+
+@test "new_project: create a new project file" {
+  TMUX_PROJECT_DIR="${BATS_TEST_DIRNAME}/statics" run_script --new bar
+
+  [ "$status" -eq 0 ]
 }
