@@ -105,7 +105,7 @@ new_project() {
   fi
 
   if [[ -f "$PROJECT_DIR/$project_name" ]]; then
-    error "'$project_name' already exists in $PROJECT_DIR"
+    error "'$project_name' already exists"
   fi
 
   touch "$PROJECT_DIR/$project_name"
