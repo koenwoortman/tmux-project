@@ -108,7 +108,7 @@ new_project() {
     error "'$project_name' already exists"
   fi
 
-  touch "$PROJECT_DIR/$project_name"
+  echo -e "rename-window 'first'" >> "$PROJECT_DIR/$project_name"
 }
 
 
