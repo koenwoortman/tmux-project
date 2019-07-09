@@ -225,14 +225,12 @@ open_project() {
 main() {
   local argument=$1
 
-  shift
-
   case "${argument}" in
     '-c' | '--close')
-      close_project $1
+      close_project $2
       ;;
     '-e' | '--edit')
-      edit_project $1
+      edit_project $2
       ;;
     '-h' | '--help')
       usage
@@ -241,22 +239,25 @@ main() {
       list_projects
       ;;
     '-n' | '--new')
-      new_project $1
+      new_project $2
       ;;
     '-r' | '--remove')
-      remove_project $1
+      remove_project $2
       ;;
     '-s' | '--save')
-      save_project $1
+      save_project $2
       ;;
     '-v' | '--version')
       version
+      ;;
+    -*)
+      error 'Unknown argument'
       ;;
     '')
       error 'Missing argument'
       ;;
     *)
-      open_project $argument
+      open_project $@
   esac
 }
 
