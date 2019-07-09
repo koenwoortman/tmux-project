@@ -193,14 +193,10 @@ close_project() {
 }
 
 
-# Open a bootstrapped tmux session
+# Open bootstrapped tmux sessions
 #
-# $1 - name of the bootstrap file
+# $@ - names of bootstrap files
 open_project() {
-  if [[ $# -ne 1 ]]; then
-    error "No project specified"
-  fi
-
   local project_name=$1
 
   if [[ ! -f "$PROJECT_DIR/$project_name" ]]; then
