@@ -17,54 +17,54 @@ new-window -n server
 send-keys "cd ~/projects/foo && yarn run dev" C-m
 ```
 
-Make sure `tmux-project` can be found in your PATH and run `tmux-project foo`.
+Make sure `pj` can be found in your PATH and run `pj foo`.
 
 
 ## Usage
 
 Open a project from an existing bootstrap file.
 ```
-tmux-project <project>
+pj <project>
 ```
 
 Create a new project bootstrap file.
 ```
-tmux-project --new <project>
+pj --new <project>
 ```
 
 Save current tmux session to a project bootstrap file.
 ```
-tmux-project --save
+pj --save
 ```
 
 Edit a project bootstrap file.
 ```
-tmux-project --edit <project>
+pj --edit <project>
 ```
 
 List all the projects you have configured.
 ```
-tmux-project --list
+pj --list
 ```
 
 Remove a project bootstrap file.
 ```
-tmux-project --remove <project>
+pj --remove <project>
 ```
 
 Close the current or specified tmux session
 ```
-tmux-project --close [<project>]
+pj --close [<project>]
 ```
 
 Shows tmux-project help information.
 ```
-tmux-project --help
+pj --help
 ```
 
 Shows tmux-project version.
 ```
-tmux-project --version
+pj --version
 ```
 
 

@@ -8,7 +8,7 @@ load helpers/main
 @test "missing argument: should throw an error" {
   run_script
 
-  [ "${lines[0]}" = "tmux-project: Missing argument" ]
-  [ "${lines[1]}" = "Try 'tmux-project --help' for more information." ]
+  [ "${lines[0]}" = "pj: Missing argument" ]
+  [ "${lines[1]}" = "Try 'pj --help' for more information." ]
   [ "$status" -eq 1 ]
 }

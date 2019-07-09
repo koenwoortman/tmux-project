@@ -8,12 +8,12 @@ VERSION=0.2.0
 
 @test "version: print the current version with --version" {
   run_script --version
-  [ "${lines[0]}" = "tmux-project ${VERSION}" ]
+  [ "${lines[0]}" = "pj ${VERSION}" ]
   [ "$status" -eq 0 ]
 }
 
 @test "version: print the current version with -v" {
   run_script --version
-  [ "${lines[0]}" = "tmux-project ${VERSION}" ]
+  [ "${lines[0]}" = "pj ${VERSION}" ]
   [ "$status" -eq 0 ]
 }

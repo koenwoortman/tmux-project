@@ -7,14 +7,14 @@ load helpers/main
 @test "remove_project: fail when no project name is specified" {
   TMUX_PROJECT_DIR="${BATS_TEST_DIRNAME}/statics" run_script --remove
 
-  [ "${lines[0]}" = "tmux-project: specify a project name" ]
+  [ "${lines[0]}" = "pj: specify a project name" ]
   [ "$status" -eq 1 ]
 }
 
 @test "remove_project: fail when project does not exist" {
   TMUX_PROJECT_DIR="${BATS_TEST_DIRNAME}/statics" run_script --remove bar
 
-  [ "${lines[0]}" = "tmux-project: 'bar' doesn't exist" ]
+  [ "${lines[0]}" = "pj: 'bar' doesn't exist" ]
   [ "$status" -eq 1 ]
 }
 

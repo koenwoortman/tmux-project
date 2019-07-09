@@ -6,12 +6,12 @@ load helpers/main
 
 @test "help: display help with --help" {
   run_script --help
-  [ "${lines[0]}" = "usage: tmux-project <project name>" ]
+  [ "${lines[0]}" = "usage: pj <project name>" ]
   [ "$status" -eq 0 ]
 }
 
 @test "help: display help with -h" {
   run_script -h
-  [ "${lines[0]}" = "usage: tmux-project <project name>" ]
+  [ "${lines[0]}" = "usage: pj <project name>" ]
   [ "$status" -eq 0 ]
 }
