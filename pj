@@ -53,6 +53,15 @@ require_tmux_session() {
 }
 
 
+# Check whether a tmux session exists
+#
+# $1 - session name
+session_exists() {
+  local session=$1
+
+  return 0
+}
+
 # Launch the editor
 #
 # $@ - file names to edit
@@ -195,24 +204,36 @@ close_project() {
 
 # Open bootstrapped tmux sessions
 #
+# $1 - name of bootstrap file
+tmux_init() {
+  TMUX='' tmux new-session -d -s "$arg" \;
+}
+
+
+# Open bootstrapped tmux sessions
+#
 # $@ - names of bootstrap files
-open_project() {
-  local project_name=$1
+open_projects() {
+  for arg in "$@"; do
+    # Ignore if session already exists
+    tmux has-session -t=$arg 2> /dev/null
+    if [[ $? -eq 0 ]]; then
+      continue;
+    fi
 
-  if [[ ! -f "$PROJECT_DIR/$project_name" ]]; then
-    error "'$project_name' not found in $PROJECT_DIR"
-  fi
+    # Create sessions
+    if [[ -f "$PROJECT_DIR/$arg" ]]; then
+      tmux_init $arg
+    else
+      TMUX='' tmux new-session -d -s "$arg"
+    fi
+  done
 
-  if ! tmux has-session -t "$project_name" > /dev/null 2>&1; then
-    TMUX='' tmux new-session -d -s "$project_name"
-    xargs -L1 tmux < "$PROJECT_DIR/$project_name"
-    tmux select-window -t 1
-  fi
-
+  # Display the (first) passed session
   if [[ -z "$TMUX" ]]; then
-    tmux attach -t "$project_name"
+    tmux attach -t "$1"
   else
-    tmux switch-client -t "$project_name"
+    tmux switch-client -t "$1"
   fi
 }
 
@@ -253,7 +274,8 @@ main() {
       error 'Missing argument'
       ;;
     *)
-      open_project $@
+      open_projects $@
+      ;;
   esac
 }
 
