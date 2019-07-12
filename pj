@@ -23,6 +23,13 @@ EOF
 }
 
 
+# Initial script setup
+tmux_project_init() {
+  # Create the project dir if it doesn't exists yet
+  mkdir -p "$PROJECT_DIR"
+}
+
+
 # Print an error message
 #
 # $1 - error message
@@ -289,6 +296,8 @@ main() {
   esac
 }
 
+# Initial script setup
+tmux_project_init
 
 # Run the script
 main "$@"
