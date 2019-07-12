@@ -34,6 +34,14 @@ error() {
 } >&2
 
 
+# Print an info message
+#
+# $1 - info message
+info() {
+  [[ -z "$1" ]] || printf '%s: %s\n' "${SCRIPT_NAME}" "$1"
+}
+
+
 # Print the script version
 #
 # $1 - error message
@@ -206,7 +214,36 @@ close_project() {
 #
 # $1 - name of bootstrap file
 tmux_init() {
-  TMUX='' tmux new-session -d -s "$arg" \;
+  local first_window=true
+
+  # Create a tmux window
+  #
+  # $1 - name of the window
+  window() {
+    if [ "$first_window" = true ] ; then
+      tmux rename-window $1
+      first_window=false
+    else
+      tmux new-window -n $1
+    fi
+  }
+
+  # Run command in the focussed tmux window/pane
+  #
+  # $1 - command to run
+  run() {
+    tmux send-keys "$@" C-m
+  }
+
+  TMUX='' tmux new-session -d -s "$1"
+  file="$PROJECT_DIR/$1"
+
+  while IFS= read -r line; do
+    eval $line
+  done < "$file"
+
+  unset -f window
+  unset -f run
 }
 
 
@@ -218,6 +255,7 @@ open_projects() {
     # Ignore if session already exists
     tmux has-session -t=$arg 2> /dev/null
     if [[ $? -eq 0 ]]; then
+      info "session $arg already exists"
       continue;
     fi
 
