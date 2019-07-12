@@ -86,24 +86,17 @@ window_format() {
 
 # Return tmux window information
 dump_tmux_windows() {
-  tmux list-windows -a -F "$(window_format)"
+  tmux list-windows -F "$( window_format )"
 }
 
 
 # Print a tmux window config
 capture_tmux_windows() {
-  local config=''
+  local config=""
   local windows=$( dump_tmux_windows )
 
-  local iteration=1
   for window in $windows; do
-    if [[ "$iteration" -eq 1 ]]; then
-      config="rename-window $window"
-    else
-      config+="\nnew-window -n $window"
-    fi
-
-    iteration=$((iteration + 1))
+    config+="window $window\n"
   done
 
   echo "${config}"
