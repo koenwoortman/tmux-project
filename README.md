@@ -47,9 +47,9 @@ List all the projects you have configured.
 pj --list
 ```
 
-Remove a project bootstrap file.
+Delete a project bootstrap file.
 ```
-pj --remove <project>
+pj --delete <project>
 ```
 
 Close the current or specified tmux session

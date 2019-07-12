@@ -12,11 +12,11 @@ usage: ${SCRIPT_NAME} <project name>
 
 options:
   -c, --close     [PROJECT]   Close a tmux session
+  -d, --delete     PROJECT    Delete a new tmux-project file
   -e, --edit       PROJECT    Edit a tmux-project file
   -h, --help                  Display this help message
   -l, --list                  List known tmux-projects
   -n, --new        PROJECT    Create a new tmux-project file
-  -r, --remove     PROJECT    Remove a new tmux-project file
   -s, --save                  Save current session as tmux-project
   -v, --version               Display the version number
 
@@ -172,10 +172,10 @@ save_project() {
 }
 
 
-# Remove a project bootstrap file
+# Delete a project bootstrap file
 #
 # $1 - bootstrap file to delete
-remove_project() {
+delete_project() {
   local project_name=$1
 
   if [[ -z "$project_name" ]]; then
@@ -186,7 +186,8 @@ remove_project() {
     error "'$project_name' doesn't exist"
   fi
 
-  read -p "Are you sure? (y/n) " -n 1 -r
+  info "you're about to delete $project_name"
+  read -p "Are you sure? (y/N) " -n 1 -r
   echo    # Move to a new line
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     rm "$PROJECT_DIR/$project_name"
@@ -296,8 +297,8 @@ main() {
     '-n' | '--new')
       new_project $2
       ;;
-    '-r' | '--remove')
-      remove_project $2
+    '-d' | '--delete')
+      delete_project $2
       ;;
     '-s' | '--save')
       save_project $2
