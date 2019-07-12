@@ -35,11 +35,6 @@ Open a project from an existing bootstrap file.
 pj <project>
 ```
 
-Create a new project bootstrap file.
-```
-pj --new <project>
-```
-
 Save current tmux session to a project bootstrap file.
 ```
 pj --save
