@@ -4,6 +4,14 @@
 
 Create and switch between preconfigured tmux sessions.
 
+### Table of content
+
+* [Get started](#get-started)
+* [Usage](#usage)
+* [Configuration](#configuration)
+* [License](#license)
+* [Acknowledgments](#acknowledgments)
+
 
 ## Get started
 
