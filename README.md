@@ -19,10 +19,10 @@ Create a tmux sessions file with normal tmux commands
 
 ```
 $ cat ~/.config/tmux-project/foo
-rename-window code
-send-keys "cd ~/projects/foo && vim ." C-m
-new-window -n server
-send-keys "cd ~/projects/foo && yarn run dev" C-m
+window "code"
+run "cd ~/projects/foo && vim ."
+window "server"
+run "cd ~/projects/foo && yarn run dev"
 ```
 
 Make sure `pj` can be found in your PATH and run `pj foo`.
