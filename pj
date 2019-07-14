@@ -203,10 +203,10 @@ tmux_init() {
   # $1 - name of the window
   window() {
     if [ "$first_window" = true ] ; then
-      tmux rename-window $1
+      tmux rename-window "$1"
       first_window=false
     else
-      tmux new-window -n $1
+      tmux new-window -n "$1"
     fi
   }
 
