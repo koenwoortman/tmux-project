@@ -197,27 +197,31 @@ close_project() {
 # $1 - name of bootstrap file
 tmux_init() {
   local first_window=true
+  local project_name="$1"
+  local current_window=""
 
   # Create a tmux window
   #
   # $1 - name of the window
   window() {
     if [ "$first_window" = true ] ; then
-      tmux rename-window "$1"
+      tmux rename-window -t "$project_name:1" "$1"
       first_window=false
     else
-      tmux new-window -n "$1"
+      tmux new-window -t "$project_name:" -n "$1"
     fi
+
+    current_window="$1"
   }
 
   # Run command in the focussed tmux window/pane
   #
   # $1 - command to run
   run() {
-    tmux send-keys "$@" C-m
+    tmux send-keys -t "$project_name:$current_window" "$@" C-m
   }
 
-  TMUX='' tmux new-session -d -s "$1"
+  TMUX='' tmux new-session -d -s "$project_name"
   file="$PROJECT_DIR/$1"
 
   while IFS= read -r line; do
